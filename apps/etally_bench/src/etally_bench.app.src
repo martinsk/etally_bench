@@ -1,0 +1,14 @@
+{application, etally_bench,
+ [
+  {description, ""},
+  {vsn, "##VERSION##"},
+  {id, "etally_bench"},
+  {registered, [etally_bench_sup]},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  inets
+                 ]},
+  {mod, {etally_bench_app, []}},
+  {env, []}
+ ]}.
