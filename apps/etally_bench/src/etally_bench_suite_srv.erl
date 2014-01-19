@@ -12,7 +12,7 @@
 
 test_count_inserts(Instance) ->
     lager:info(" -= COUNTS =- "),
-    Fun = fun(0, F) -> ok;
+    Fun = fun(0, _F) -> ok;
              (X, F) ->
                   etally_count:send_event([<<"test_event">>], [{<<"test_event">>, <<"test_leaderboard">>}], Instance),
                   F(X-1, F)
@@ -20,9 +20,9 @@ test_count_inserts(Instance) ->
 
     _ = [begin
              Scaled_X = 1000*X,
-             {Time, Res} = timer:tc(fun () ->
-                                            ok = Fun(Scaled_X, Fun),
-                                            _ = etally_count:get_counter(<<"test_event">>, Instance)
+             {Time, _Res} = timer:tc(fun () ->
+                                             ok = Fun(Scaled_X, Fun),
+                                             _ = etally_count:get_counter(<<"test_event">>, Instance)
                                     end),
              lager:info("~p inserts w. leaderboard in ~p mics -\t ~.2f ops/sec", [Scaled_X, Time, Scaled_X*1000000.0/Time] )
          end || X <- lists:seq(1,10)],
@@ -31,7 +31,7 @@ test_count_inserts(Instance) ->
 
 test_count_inserts_multi5(Instance) ->
     lager:info(" -= COUNTS MULTI 5 =- "),
-    Fun = fun(0, F) -> ok;
+    Fun = fun(0, _F) -> ok;
              (X, F) ->
                   etally_count:send_event([<<"test_event1">>, <<"test_event2">>, <<"test_event3">>, <<"test_event4">>, <<"test_event5">>],
                                           [{<<"test_event1">>, <<"test_leaderboard">>}, 
@@ -44,7 +44,7 @@ test_count_inserts_multi5(Instance) ->
 
     _ = [begin
              Scaled_X = 1000*X,
-             {Time, Res} = timer:tc(fun () ->
+             {Time, _Res} = timer:tc(fun () ->
                                             ok = Fun(Scaled_X, Fun),
                                             _ = etally_count:get_counter(<<"test_event1">>, Instance)
                                     end),
@@ -61,14 +61,14 @@ test_count_inserts_multi5(Instance) ->
 
 test_metric_inserts(Instance) ->
     lager:info(" -= METRICS =- "),
-    Fun = fun(0, F) -> ok;
+    Fun = fun(0, _F) -> ok;
              (X, F) ->
                   etally_metric:send_event([<<"test_event">>], [{<<"test_event">>, <<"test_leaderboard">>}], [<<"test_event">>], 100, Instance),
                   F(X-1, F)
           end,
     _ = [begin
              Scaled_X = 1000*X,
-             {Time, Res} = timer:tc(fun () ->
+             {Time, _Res} = timer:tc(fun () ->
                                             ok = Fun(Scaled_X, Fun),
                                             _ = etally_metric:get_counter(<<"test_event">>, Instance)
                                     end),
@@ -79,7 +79,7 @@ test_metric_inserts(Instance) ->
 
 test_metric_inserts_multi5(Instance) ->
     lager:info(" -= METRICS MULTI 5 =- "),
-    Fun = fun(0, F) -> ok;
+    Fun = fun(0, _F) -> ok;
              (X, F) ->
                   etally_metric:send_event([<<"test_event1">>, <<"test_event2">>, <<"test_event3">>, <<"test_event4">>, <<"test_event5">>],
                                            [{<<"test_event1">>, <<"test_leaderboard">>}, 
@@ -92,7 +92,7 @@ test_metric_inserts_multi5(Instance) ->
           end,
     _ = [begin
              Scaled_X = 1000*X,
-             {Time, Res} = timer:tc(fun () ->
+             {Time, _Res} = timer:tc(fun () ->
                                             ok = Fun(Scaled_X, Fun),
                                             _ = etally_metric:get_counter(<<"test_event">>, Instance)
                                     end),
@@ -103,7 +103,7 @@ test_metric_inserts_multi5(Instance) ->
 
 test_metric_inserts_multi10(Instance) ->
     lager:info(" -= METRICS MULTI 10 =- "),
-    Fun = fun(0, F) -> ok;
+    Fun = fun(0, _F) -> ok;
              (X, F) ->
                   etally_metric:send_event([<<"test_event_0">>, <<"test_event_1">>, <<"test_event_2">>, <<"test_event_3">>, <<"test_event_4">>,
                                             <<"test_event_5">>, <<"test_event_6">>, <<"test_event_7">>, <<"test_event_8">>, <<"test_event_9">>],
@@ -124,7 +124,7 @@ test_metric_inserts_multi10(Instance) ->
           end,
     _ = [begin
              Scaled_X = 1000*X,
-             {Time, Res} = timer:tc(fun () ->
+             {Time, _Res} = timer:tc(fun () ->
                                             ok = Fun(Scaled_X, Fun),
                                             _ = etally_metric:get_counter(<<"test_event">>, Instance)
                                     end),
@@ -132,7 +132,7 @@ test_metric_inserts_multi10(Instance) ->
          end || X <- lists:seq(1,10)],
     
     Large_Number = 1000000,
-    {Time, Res} = timer:tc(fun () ->
+    {Time, _Res} = timer:tc(fun () ->
                                    ok = Fun(Large_Number, Fun),
                                    _ = etally_metric:get_counter(<<"test_event">>, Instance)
                            end),
@@ -175,6 +175,6 @@ handle_info(_, State) ->
 
 code_change(_OldVsn, State, _Extra) -> {ok, State}.
 
-terminate(_Reason, State) ->
+terminate(_Reason, _State) ->
     ok.
 

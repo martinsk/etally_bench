@@ -3,3 +3,4 @@ deps/*
 log/*
 *.dump
 *.beam
+apps/etally_bench/ebin/etally_bench.app
